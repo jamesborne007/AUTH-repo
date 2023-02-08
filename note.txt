@@ -2,4 +2,16 @@ hashing algorithm
 
 123 - re3$1ki
 
-salting- 
+salting- generating random string - iylfduQWT9
+
+refactoring
+error handling
+mongoose hooks(middleware)
+
+authentication( 2 type:session based--cookies and TOKEN based-- )
+protecting route using authentication
+integrating ejs views
+
+-i ejs
+--setting view engine
+-views -signup, login, dashboard

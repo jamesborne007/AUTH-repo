@@ -4,8 +4,9 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 const { isEmail } = require('validator');
+const bcrypt = require('bcrypt');
 
-const userAuth  = new Schema({
+const userSchema  = new Schema({
     email:{
         type: String,
         unique: [true, 'please provide an email'],
@@ -20,4 +21,17 @@ const userAuth  = new Schema({
 },{timestamps: true}
 ) 
 
-module.exports = mongoose.model('user',userAuth);
+//mongoose hooks
+// functiion that proctect user info b4 we save
+//gen salting , hashing using the salting
+
+userSchema.pre('save', async function () {
+    const salt = await bcrypt.genSalt();
+    this.password = await bcrypt.hash(this.password, salt)
+
+
+})
+
+
+
+module.exports = mongoose.model('User',userSchema);
