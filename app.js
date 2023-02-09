@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const notFound = require('./middleware/notFound')
 const userRouter = require('./routes/userRouter')
 const newRouter = require('./routes/newUserRouter')
+const cookieparser = require('cookie-parser')
 app.set('view engine', 'ejs');
 
 mongoose.set('strictQuery', true);
@@ -14,6 +15,7 @@ mongoose.set('strictQuery', true);
 //middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieparser());
 
 //routes
 app.use(newRouter);
@@ -24,14 +26,28 @@ app.get("/register",(req,res)=>{
 app.get("/login",(req,res)=>{
     res.render('login')
 })
-app.get("/dashboard",(req,res)=>{
-    res.render('dashboard')
+
+
+//set cookies
+app.get('/example',(req, res) => {
+    res.cookie('isAdmin', true);
+    //milliseconds
+    res.cookie('another',false, {
+        maxAge: 24 * 60 * 60 * 1000,
+        secure: true,
+        httpOnly: true,});
+    res.send('cookies set')
 })
+
+app.get ('/get',(req, res) => {
+    const cookies = req.cookies;
+    const {isAdmin} = cookies;
+    res.json(cookies);
+})
+
 
 //error route
 app.use(notFound);
-
-
 
 
 const startserver = async() => {
@@ -45,3 +61,5 @@ const startserver = async() => {
     }
 }
 startserver()
+
+
